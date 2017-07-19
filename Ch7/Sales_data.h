@@ -1,9 +1,14 @@
 #include <iostream>
 #include <string>
-
+class Sales_data;
 std::istream &read(std::istream&, Sales_data&);
 
 class Sales_data {
+	// make auxillary functions friend, to access non-public members of the class
+friend Sales_data add(const Sales_data&, const Sales_data&);
+friend std::istream &read(std::istream&, Sales_data&);
+friend std::ostream &print(std::ostream&, const Sales_data&);
+
 	// constructors
 public:
 	Sales_data() = default;
@@ -13,7 +18,6 @@ public:
 	Sales_data(std::istream &is) { read(is, *this); }
 
 	// member functions -- must be DECLARED inside class
-
 	// implicit use of this (constant pointer) this->bookNo
 	// A const following the parameter list indicates that "this" is a pointer to const
 	std::string isbn() const { return bookNo; }
