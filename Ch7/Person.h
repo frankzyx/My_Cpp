@@ -2,9 +2,16 @@
 #include <string>
 using std::string;
 
-struct Person {
+std::istream &read(std::istream&, Person&);
+
+class Person {
+private:
 	string name;
 	string address;
+public:
+	Person() = default;
+	Person(string sname, string saddress): name(sname), address(saddress) {}
+	Person(std::istream &is) { read(is, *this); }
 
 	string getName() const { return name; }
 	string getAddress() const { return address; }

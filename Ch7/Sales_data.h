@@ -1,39 +1,42 @@
 #include <iostream>
 #include <string>
 
-struct Sales_data {
-	// members -- must be DECLARED inside class
+std::istream &read(std::istream&, Sales_data&);
+
+class Sales_data {
+	// constructors
+public:
+	Sales_data() = default;
+	Sales_data(const std::string &s): bookNo(s) {}
+	Sales_data(const std::string &s, unsigned n, double p):
+				bookNo(s), units_sold(n), revenue(p*n) {}
+	Sales_data(std::istream &is) { read(is, *this); }
+
+	// member functions -- must be DECLARED inside class
 
 	// implicit use of this (constant pointer) this->bookNo
 	// A const following the parameter list indicates that "this" is a pointer to const
 	std::string isbn() const { return bookNo; }
-
 	Sales_data& combine(const Sales_data&);
-	double avg_price() const;
-
+	
+private:
 	// data members
 	std::string bookNo;
 	unsigned units_sold = 0;
 	double revenue = 0.0;
-};
 
+	double avg_price() const {
+		return units_sold ? revenue / units_sold : 0;
+	}
+};
 
 // ==============================================================
 // definitions outside the class
-double Sales_data::avg_price() const {
-	// once scope of class is seen, the rest of coed is interpreted as being inside the class
-	if (units_sold)
-		return revenue / units_sold;
-	else
-		return 0;
-}
-
 Sales_data& Sales_data::combine(const Sales_data& rhs) {
 	units_sold += rhs.units_sold;
 	revenue += rhs.revenue;
 	return *this;
 }
-
 
 // ==============================================================
 // auxillary functions

@@ -4,10 +4,11 @@ using std::string;
 
 
 int main() {
-	Sales_data total;
-	if (read(std::cin, total)) {		// read 1st transaction
-		Sales_data trans;
-		while (read(std::cin, trans)) {
+	Sales_data total(std::cin);
+	if (!total.isbn().empty()) {		// read 1st transaction
+		std::istream &is = std::cin;
+		while (is) {
+			Sales_data trans(is);
 			if (total.isbn() == trans.isbn())
 				total.combine(trans);
 			else {
@@ -15,7 +16,6 @@ int main() {
 				total = trans;
 			}
 		}
-		print(std::cout, total) << std::endl;
 	} else {
 		std::cerr << "No data?!" << std::endl;
 	}
